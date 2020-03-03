@@ -33,7 +33,6 @@ public class Game extends JFrame{
 		ws=getWidth();
 		bi=new BufferedImage(ws,hs,BufferedImage.TYPE_INT_ARGB);
 		handler=new Handler();
-		new MainLoop(this);
 		this.addKeyListener(new KeyInput(this));
 	}
 	
