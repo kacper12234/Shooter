@@ -32,7 +32,6 @@ public class Handler {
 			bl.update();
 		for(Object ebl: enemyBullets)
 			ebl.update();
-		clear();
 		removeDeadEnemy();
 	}
 	
@@ -46,21 +45,22 @@ public class Handler {
 			ebl.render(g);
 	}
 	
-	public void clear()
+	public void removeDeadEnemy()
 	{
-		if(object.get(0).getHp()<=0)
+		ListIterator<Object> it=object.listIterator();
+		if(it.hasNext())
+		{
+		Object sq=it.next();
+		if(sq.getHp()<=0)
 		{
 			object.clear();
 			playerBullets.clear();
 			enemyBullets.clear();
 			t.cancel();
 		}
-	}
-	
-	public void removeDeadEnemy()
-	{
-		for(ListIterator<Object> it=object.listIterator();it.hasNext();) {
-			Object sq=it.next();
+		else
+		while(it.hasNext()){
+			sq=it.next();
 				if(sq.getHp()<=0)
 				{
 					if(sq.getType()==Type.Basic)
@@ -76,6 +76,7 @@ public class Handler {
 				}
 			}
 		}
+	}
 	
 	public void addObject(Object nS)
 	{
