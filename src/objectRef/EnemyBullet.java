@@ -6,12 +6,10 @@ import java.awt.Rectangle;
 
 public class EnemyBullet extends Object{
 
-	private double b;
 	Handler handler;
 	
 	public EnemyBullet( double px, double py,double v, Game game) {
-		super(game.getWidth()*0.0043, px, py,v, game);
-		b=game.getHeight()*0.0125;
+		super((int)(game.getWidth()*0.0043),(int)(game.getHeight()*0.0125), px, py,v, game);
 		handler=game.getHandler();
 	}
 
@@ -24,12 +22,12 @@ public class EnemyBullet extends Object{
 	@Override
 	public void render(Graphics g) {
 		g.setColor(Color.PINK.darker());
-		g.fillRect((int) (getPx() - getA() / 2), (int) (getPy() - b / 2), (int) getA(), (int) b);
+		g.fillRect((int)getPx() - getA() / 2,(int)getPy() - getB() / 2, getA(), getB());
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle((int) (getPx() - getA() / 2), (int) (getPy() - b / 2), (int) getA(), (int) b);
+		return new Rectangle((int)getPx() - getA() / 2, (int)getPy() - getB()/ 2, getA(), getB());
 	}
 
 }

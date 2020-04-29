@@ -5,9 +5,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 
@@ -21,6 +25,7 @@ public class Game extends JFrame{
 	private BufferedImage bi;
 	private Handler handler;
 	private int ws,hs;
+	private Random rand;
 	
 	public Game()
 	{	
@@ -33,7 +38,7 @@ public class Game extends JFrame{
 		ws=getWidth();
 		bi=new BufferedImage(ws,hs,BufferedImage.TYPE_INT_ARGB);
 		handler=new Handler();
-		new MainLoop(this);
+		rand=new Random();
 		this.addKeyListener(new KeyInput(this));
 	}
 	
@@ -85,10 +90,10 @@ public class Game extends JFrame{
 	        }
 	}
 	
-	public void update()
+	public void update() throws IOException
 	{
 		if(handler.getLevel()==0)
-			handler.addObject(new Player(this));
+			handler.addObject(new Player(this,new Color(rand.nextInt(0x1000000))));
 			
 		if(handler.getSquare().size()==1)
 		{
@@ -99,13 +104,13 @@ public class Game extends JFrame{
 		handler.update();
 	}
 	
-	public void loadLevel()
-	{
-		Random rand=new Random();
-		Color enm=new Color(rand.nextInt(0x1000000));
+	public void loadLevel() throws IOException
+	{Color enm=new Color(rand.nextInt(0x1000000));
+		ImageLoader convimg=new ImageLoader(ImageIO.read(getClass().getResource("/Invader.png")),enm);
+		Image img=convimg.getScaledInstance((int)(getWidth()*0.07),getWidth()/20, Image.SCALE_SMOOTH);
 		if(handler.getLevel()%5!=0)
 		for(int i=0;i<8;i++)
-			handler.addObject(new Enemy(-ws*0.378+ws*0.107*i,20*(int)Math.sqrt(handler.getLevel()),enm,this));
+			handler.addObject(new Enemy(-ws*0.378+ws*0.107*i,20*(int)Math.sqrt(handler.getLevel()),this,img));
 		else
 			handler.addObject(new Boss(40*handler.getLevel(),enm,this));
 	}
@@ -113,7 +118,4 @@ public class Game extends JFrame{
 	public Handler getHandler() {
 		return handler;
 	}
-
-
-	
 }

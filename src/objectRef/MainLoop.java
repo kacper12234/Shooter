@@ -1,5 +1,6 @@
 package objectRef;
 
+import java.io.IOException;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +22,12 @@ public class MainLoop extends TimerTask{
 	@Override
 	public void run()
 	{
-		game.update();
+		try {
+			game.update();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	try
 	{
 		SwingUtilities.invokeLater(new Runnable()

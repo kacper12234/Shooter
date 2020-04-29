@@ -7,25 +7,27 @@ import java.awt.Rectangle;
 public abstract class Object {
 
 	private int hp;
-	private  double a;
+	private  int a,b;
 	private double px,py;
 	private  double v;
 	private Color c;
 	private Type type;
 	Game game;
 	
-	public Object(double a,double px,double py,int hp,Game game)
+	public Object(int a,int b,double px,double py,int hp,Game game)
 	{
 		this.a=a;
+		this.b=b;
 		this.px=px;
 		this.py=py;
 		this.hp=hp;
 		this.game=game;
 	}
 	
-	public Object(double a,double px,double py,int hp,Type type,Game game)
+	public Object(int a,int b,double px,double py,int hp,Type type,Game game)
 	{
 		this.a=a;
+		this.b=b;
 		this.px=px;
 		this.py=py;
 		this.hp=hp;
@@ -33,9 +35,10 @@ public abstract class Object {
 		this.type=type;
 	}
 	
-	public Object(double a,double px,double py,double v,Game game)
+	public Object(int a,int b,double px,double py,double v,Game game)
 	{
 		this.a=a;
+		this.b=b;
 		this.px=px;
 		this.py=py;
 		this.v=v;
@@ -56,14 +59,10 @@ public abstract class Object {
 		this.hp = hp;
 	}
 
-	public double getA() {
+	public int getA() {
 		return a;
 	}
-
-	public void setA(double a) {
-		this.a = a;
-	}
-
+	
 	public double getPx() {
 		return px;
 	}
@@ -102,6 +101,10 @@ public abstract class Object {
 
 	public void setType(Type type) {
 		this.type = type;
+	}
+
+	public int getB() {
+		return b;
 	}
 	
 }

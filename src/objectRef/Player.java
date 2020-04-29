@@ -2,28 +2,36 @@ package objectRef;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.Iterator;
+
+import javax.imageio.ImageIO;
 
 public class Player extends Object{
 
 	private int ws=game.getWidth();
 	private int hs=game.getHeight();
 	private long timea=System.currentTimeMillis();
-	Handler handler;
+	private Handler handler;
+	private ImageLoader convimg;
+	private Image img;
 	
-	public Player(Game game) {
-		super(game.getWidth()*0.0285, 0,-game.getHeight()/2+50,5, game);
+	public Player(Game game,Color c) throws IOException {
+		super((int)(game.getWidth()*0.04),(int)(game.getWidth()*0.043), 0,-game.getHeight()/2+50,5, game);
 		handler=game.getHandler();
+		convimg=new ImageLoader(ImageIO.read(getClass().getResource("/spaceship.png")),c);
+		img=convimg.getScaledInstance(getA(), getB(), Image.SCALE_SMOOTH);
 	}
 
 	@Override
 	public void update() {
 			
 		
-		if(game.getHandler().isUp() && getPy()+getA()/2<hs/2-32)
+		if(game.getHandler().isUp() && getPy()+getB()/2<hs/2-32)
 			setPy(getPy()+hs*0.002125);
-		if(game.getHandler().isDown() && getPy()-getA()/2>-hs/2+2)
+		if(game.getHandler().isDown() && getPy()-getB()/2>-hs/2+2)
 			setPy(getPy()-hs*0.002125);
 			if(game.getHandler().isRight() && getPx()+getA()/2<ws/2-2)
 				setPx(getPx()+hs*0.002125);
@@ -33,8 +41,8 @@ public class Player extends Object{
 			long timeb=System.currentTimeMillis();
 			if(game.getHandler().isShot() && timeb-timea>60)
 			{
-				game.getHandler().addBullet(new PlayerBullet(getPx()-ws*0.0071,getPy()+hs*0.0125/2,game));
-				game.getHandler().addBullet(new PlayerBullet(getPx()+ws*0.0071,getPy()+hs*0.0125/2,game));
+				game.getHandler().addBullet(new PlayerBullet(getPx()-ws*0.0088,getPy()+hs*0.0125/2,game));
+				game.getHandler().addBullet(new PlayerBullet(getPx()+ws*0.0088,getPy()+hs*0.0125/2,game));
 				timea=System.currentTimeMillis();
 			}
 			
@@ -57,13 +65,12 @@ public class Player extends Object{
 	}
 	@Override
 	public void render(Graphics g){
-		g.setColor(Color.BLACK);
-		g.fillRect((int) (getPx() - getA() / 2), (int) (getPy() - getA() / 2), (int) getA(), (int) getA());
+		g.drawImage(img,(int) getPx() - getA()/ 2,(int) getPy() - getB() / 2,null);
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle((int) (getPx() - getA() / 2), (int) (getPy() - getA() / 2), (int) getA(), (int) getA());
+		return new Rectangle((int) getPx() - getA() / 2, (int) getPy() - getB() / 2, getA(),  getB());
 	}
 
 	

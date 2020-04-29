@@ -8,9 +8,9 @@ import java.util.Timer;
 
 public class Handler {
 
-	ArrayList <Object> object=new ArrayList<>();
-	ArrayList <PlayerBullet> playerBullets=new ArrayList<>();
-	ArrayList <EnemyBullet> enemyBullets=new ArrayList<>();
+	private ArrayList <Object> object=new ArrayList<>();
+	private ArrayList <PlayerBullet> playerBullets=new ArrayList<>();
+	private ArrayList <EnemyBullet> enemyBullets=new ArrayList<>();
 	private boolean up,down,right,left,shot=false;
 	private int w,tm,level,score;
 	private Timer t;
@@ -32,7 +32,6 @@ public class Handler {
 			bl.update();
 		for(Object ebl: enemyBullets)
 			ebl.update();
-		clear();
 		removeDeadEnemy();
 	}
 	
@@ -46,21 +45,22 @@ public class Handler {
 			ebl.render(g);
 	}
 	
-	public void clear()
+	public void removeDeadEnemy()
 	{
-		if(object.get(0).getHp()<=0)
+		ListIterator<Object> it=object.listIterator();
+		if(it.hasNext())
+		{
+		Object sq=it.next();
+		if(sq.getHp()<=0)
 		{
 			object.clear();
 			playerBullets.clear();
 			enemyBullets.clear();
 			t.cancel();
 		}
-	}
-	
-	public void removeDeadEnemy()
-	{
-		for(ListIterator<Object> it=object.listIterator();it.hasNext();) {
-			Object sq=it.next();
+		else
+		while(it.hasNext()){
+			sq=it.next();
 				if(sq.getHp()<=0)
 				{
 					if(sq.getType()==Type.Basic)
@@ -76,12 +76,13 @@ public class Handler {
 				}
 			}
 		}
+	}
 	
 	public void addObject(Object nS)
 	{
 		object.add(nS);
 	}
-
+	
 	public void addBullet(PlayerBullet nB)
 	{
 		playerBullets.add(nB);
