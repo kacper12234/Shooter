@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 public class Game extends JFrame{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -26,9 +26,9 @@ public class Game extends JFrame{
 	private Handler handler;
 	private int ws,hs;
 	private Random rand;
-	
+
 	public Game()
-	{	
+	{
 		Dimension size=Toolkit.getDefaultToolkit().getScreenSize();
 		hs=(int) (size.getHeight()*0.74);
 	setSize((int) (hs*0.875),hs);
@@ -41,7 +41,7 @@ public class Game extends JFrame{
 		rand=new Random();
 		this.addKeyListener(new KeyInput(this));
 	}
-	
+
 	public static void main(String []args)
 	{
 	java.awt.EventQueue.invokeLater(new Runnable()
@@ -59,7 +59,7 @@ public class Game extends JFrame{
 		draw(bi.getGraphics());
 		g.drawImage(bi,0,0,null);;
 	}
-	
+
 	public void draw(Graphics g)
 	{
 		((Graphics2D) g).setBackground(Color.white);
@@ -89,21 +89,21 @@ public class Game extends JFrame{
 		        g2.drawString(h, (int) (ws/2-ws*0.12), (int)(-hs*0.43));
 	        }
 	}
-	
+
 	public void update() throws IOException
 	{
 		if(handler.getLevel()==0)
 			handler.addObject(new Player(this,new Color(rand.nextInt(0x1000000))));
-			
+
 		if(handler.getSquare().size()==1)
 		{
 			handler.setLevel(handler.getLevel()+1);
 			loadLevel();
 		}
-			
+
 		handler.update();
 	}
-	
+
 	public void loadLevel() throws IOException
 	{Color enm=new Color(rand.nextInt(0x1000000));
 		ImageLoader convimg=new ImageLoader(ImageIO.read(getClass().getResource("/Invader.png")),enm);
