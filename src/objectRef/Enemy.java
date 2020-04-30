@@ -1,13 +1,10 @@
 package objectRef;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
-
-
 
 
 public class Enemy extends Object{
@@ -18,10 +15,10 @@ public class Enemy extends Object{
 	private long timea=System.currentTimeMillis();
 	private Random rand=new Random();
 	private Handler handler;
-	private Image img;
+	private ImageLoader img;
 	
 	
-	public Enemy(double px, int hp,Game game,Image img) throws IOException {
+	public Enemy(double px, int hp,Game game,ImageLoader img) throws IOException {
 		super((int)(game.getWidth()*0.07),game.getWidth()/20, px, game.getHeight()/2, hp,Type.Basic, game);
 		vy=0;
 		handler=game.getHandler();

@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 public class Game extends JFrame{
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -26,9 +26,11 @@ public class Game extends JFrame{
 	private Handler handler;
 	private int ws,hs;
 	private Random rand;
-
-	public Game()
-	{
+	private Image[] img;
+	private ImageLoader[] limg;
+	
+	public Game() throws IOException
+	{	
 		Dimension size=Toolkit.getDefaultToolkit().getScreenSize();
 		hs=(int) (size.getHeight()*0.74);
 	setSize((int) (hs*0.875),hs);
@@ -39,16 +41,32 @@ public class Game extends JFrame{
 		bi=new BufferedImage(ws,hs,BufferedImage.TYPE_INT_ARGB);
 		handler=new Handler();
 		rand=new Random();
+		img=new Image[3];
+		img[0]=ImageIO.read(getClass().getResource("/spaceship.png")).getScaledInstance(getWidth()/25,(int)(getWidth()*0.043), Image.SCALE_SMOOTH);
+		img[1]=ImageIO.read(getClass().getResource("/Invader.png")).getScaledInstance((int)(getWidth()*0.07),getWidth()/20, Image.SCALE_SMOOTH);
+		img[2]=ImageIO.read(getClass().getResource("/boss.png")).getScaledInstance(getWidth()/5,(int)(getWidth()*0.12), Image.SCALE_SMOOTH);
+		limg=new ImageLoader[3];
+		for(int i=0;i<3;i++)
+		{
+			BufferedImage bi=new BufferedImage(img[i].getWidth(null), img[i].getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			bi.getGraphics().drawImage(img[i], 0, 0, null);
+			limg[i]=new ImageLoader(bi);
+		}
 		this.addKeyListener(new KeyInput(this));
 	}
-
+	
 	public static void main(String []args)
 	{
 	java.awt.EventQueue.invokeLater(new Runnable()
 			{
 		public void run()
 		{
-			new Game().setVisible(true);
+			try {
+				new Game().setVisible(true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 			});
 	}
@@ -59,7 +77,7 @@ public class Game extends JFrame{
 		draw(bi.getGraphics());
 		g.drawImage(bi,0,0,null);;
 	}
-
+	
 	public void draw(Graphics g)
 	{
 		((Graphics2D) g).setBackground(Color.white);
@@ -89,30 +107,29 @@ public class Game extends JFrame{
 		        g2.drawString(h, (int) (ws/2-ws*0.12), (int)(-hs*0.43));
 	        }
 	}
-
+	
 	public void update() throws IOException
 	{
 		if(handler.getLevel()==0)
-			handler.addObject(new Player(this,new Color(rand.nextInt(0x1000000))));
-
+			handler.addObject(new Player(this,limg[0].colorImage(new Color(rand.nextInt(0x1000000)))));
+			
 		if(handler.getSquare().size()==1)
 		{
 			handler.setLevel(handler.getLevel()+1);
 			loadLevel();
 		}
-
+			
 		handler.update();
 	}
-
+	
 	public void loadLevel() throws IOException
-	{Color enm=new Color(rand.nextInt(0x1000000));
-		ImageLoader convimg=new ImageLoader(ImageIO.read(getClass().getResource("/Invader.png")),enm);
-		Image img=convimg.getScaledInstance((int)(getWidth()*0.07),getWidth()/20, Image.SCALE_SMOOTH);
+	{
+		Color enm=new Color(rand.nextInt(0x1000000));
 		if(handler.getLevel()%5!=0)
 		for(int i=0;i<8;i++)
-			handler.addObject(new Enemy(-ws*0.378+ws*0.107*i,20*(int)Math.sqrt(handler.getLevel()),this,img));
+			handler.addObject(new Enemy(-ws*0.378+ws*0.107*i,20*(int)Math.sqrt(handler.getLevel()),this,limg[1].colorImage(enm)));
 		else
-			handler.addObject(new Boss(40*handler.getLevel(),enm,this));
+			handler.addObject(new Boss(40*handler.getLevel(),enm,this,limg[2].colorImage(enm)));
 	}
 
 	public Handler getHandler() {

@@ -1,13 +1,10 @@
 package objectRef;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.Iterator;
 
-import javax.imageio.ImageIO;
 
 public class Player extends Object{
 
@@ -15,14 +12,12 @@ public class Player extends Object{
 	private int hs=game.getHeight();
 	private long timea=System.currentTimeMillis();
 	private Handler handler;
-	private ImageLoader convimg;
-	private Image img;
+	private ImageLoader img;
 	
-	public Player(Game game,Color c) throws IOException {
-		super((int)(game.getWidth()*0.04),(int)(game.getWidth()*0.043), 0,-game.getHeight()/2+50,5, game);
+	public Player(Game game,ImageLoader img) throws IOException {
+		super(game.getWidth()/25,(int)(game.getWidth()*0.043), 0,-game.getHeight()/2+50,5, game);
 		handler=game.getHandler();
-		convimg=new ImageLoader(ImageIO.read(getClass().getResource("/spaceship.png")),c);
-		img=convimg.getScaledInstance(getA(), getB(), Image.SCALE_SMOOTH);
+		this.img=img;
 	}
 
 	@Override
