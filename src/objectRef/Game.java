@@ -55,9 +55,20 @@ public class Game extends JFrame{
 		this.addKeyListener(new KeyInput(this));
 	}
 	
-	public static void main(String []args) throws IOException
+	public static void main(String []args)
 	{
-	new Game().setVisible(true);
+	java.awt.EventQueue.invokeLater(new Runnable()
+			{
+		public void run()
+		{
+			try {
+				new Game().setVisible(true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			});
 	}
 
 	@Override
